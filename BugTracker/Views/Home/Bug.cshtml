@@ -1,0 +1,51 @@
+﻿@model IEnumerable<BugModel>
+@{
+    ViewData["Title"] = "Bug";
+}
+<h2>Bugs</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table id="BugTable" width="100%">
+    <thead>
+        <tr>
+            <th>
+                Bug Id
+            </th>
+            <th>
+                Bug Description
+            </th>
+            <th>
+                Created By
+            </th>
+            <th>
+                Updated By
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Bug in Model)
+        {
+            <tr>
+                <td>
+                    @Bug.BugId
+                </td>
+                <td>
+                    @Bug.BugDescription
+                </td>
+                <td>
+                    @Bug.CreatedBy
+                </td>
+                <td>
+                    @Bug.UpdatedBy
+                </td>
+                <td>
+                    @Html.ActionLink("Update Bug", "UpdateBug");
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
