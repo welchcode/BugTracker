@@ -1,7 +1,27 @@
 ﻿
 @{
     ViewData["Title"] = "UpdateBug";
+    var Bug = ViewBag.Bug;                  //passing in the Bug as a BugModel thru ViewBag
+    var ListOfBugComments = ViewBag.ListOfBugComments;
 }
 
-<h2>UpdateBug</h2>
+<h2>Update Bug &nbsp; <strong>#@Bug.BugId</strong></h2>
 
+
+<form id="UpdateBugForm">
+    
+</form>
+
+
+@{
+    //we need to get all the comments/updates for this bug and show them on the screen
+    foreach(var BugComment in ListOfBugComments)
+    {
+    <p>@BugComment.BugId &nbsp;</p> 
+    <p>@BugComment.BugComment &nbsp;</p>
+    <p>@BugComment.Author &nbsp;</p>
+    <p>@BugComment.BugCommentDate</p>
+
+    }
+
+}
