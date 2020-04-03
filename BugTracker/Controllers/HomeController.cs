@@ -15,7 +15,33 @@ namespace BugTracker.Controllers
             return View();
         }
 
-        public IActionResult UpdateBug(int BugIdParameter)
+        public IActionResult UpdateBug(string BugId, string DateTimeCreated, string BugComment, string Author)
+        {
+            string SqlString = "INSERT INTO BugTrackerDatabase.dbo.BugComments (BugId, DateTimeCreated, BugComment, Author) " +
+                               "VALUES (@BugId, @DateTimeCreated, @BugComment, @Author);";
+
+            Utilities.Command = new System.Data.SqlClient.SqlCommand(SqlString, Utilities.Connection);
+            Utilities.Command.Parameters.AddWithValue("@BugId", Int32.Parse(BugId));
+            Utilities.Command.Parameters.AddWithValue("@DateTimeCreated", DateTime.Parse(DateTimeCreated));
+            Utilities.Command.Parameters.AddWithValue("@BugComment", BugComment);
+            Utilities.Command.Parameters.AddWithValue("Author", Author);
+            Utilities.Connection.Open();
+
+            Utilities.Command.ExecuteNonQuery();
+
+            Utilities.Connection.Close();
+
+            return GetBug(Int32.Parse(BugId));
+        }
+
+        
+
+        public IActionResult CreateBug()
+        {
+            return View("CreateNewBug");
+        }
+
+        public IActionResult GetBug(int BugIdParameter)
         {
             string BugId, BugDescription, CreatedBy, UpdatedBy, Comment, Author;
             DateTime BugCommentDate;
@@ -73,7 +99,7 @@ namespace BugTracker.Controllers
 
 
             SqlString = "SELECT DateTimeCreated, BugComment, Author FROM BugTrackerDatabase.dbo.BugComments " +
-                        "WHERE BugId = " + Bug.BugId;
+                        "WHERE BugId = " + Bug.BugId + " ORDER BY DateTimeCreated ASC;";
 
             List<BugCommentModel> ListOfBugComments = new List<BugCommentModel>();
 
@@ -118,7 +144,7 @@ namespace BugTracker.Controllers
 
             Utilities.Connection.Close();
 
-            return View();
+            return View("UpdateBug");
         }
 
         public IActionResult About()
@@ -150,7 +176,7 @@ namespace BugTracker.Controllers
         {
             var BugsList = new List<BugModel>();
 
-            string SqlString = "SELECT * from BugTrackerDatabase.dbo.BugTable; ";
+            string SqlString = "SELECT * from BugTrackerDatabase.dbo.BugTable;"; 
 
             string BugId, BugDescription, CreatedBy, UpdatedBy;
 

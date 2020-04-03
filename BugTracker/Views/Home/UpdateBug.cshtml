@@ -2,26 +2,41 @@
 @{
     ViewData["Title"] = "UpdateBug";
     var Bug = ViewBag.Bug;                  //passing in the Bug as a BugModel thru ViewBag
-    var ListOfBugComments = ViewBag.ListOfBugComments;
+    List<BugCommentModel> ListOfBugComments = ViewBag.ListOfBugComments;
 }
 
 <h2>Update Bug &nbsp; <strong>#@Bug.BugId</strong></h2>
 
-
 <form id="UpdateBugForm">
-    
+
+    <textarea id="BugComment" name="BugComment" rows="10" cols="10" style="width:80%; border-width:thick; font-size:x-large;"></textarea>
+    <textarea id="BugId" name="BugId" style="display:none;">@Bug.BugId</textarea>
+    <textarea id="DateTimeCreated" name="DateTimeCreated" style="display:none;">@DateTime.Now.ToString()</textarea>
+    <textarea id="Author" name="Author" style="display:none;">@System.Security.Principal.WindowsIdentity.GetCurrent().Name.ToString().Split('\\').Last()</textarea>
+    <input type="submit" asp-controller="Home" asp-action="UpdateBug" />
 </form>
 
+<br />
+
+<h2><strong>Previous Updates</strong></h2>
+
+<br />
 
 @{
-    //we need to get all the comments/updates for this bug and show them on the screen
-    foreach(var BugComment in ListOfBugComments)
+    //reversing loop to display most recent comments at top of list
+    for (int i = ListOfBugComments.Count - 1; i >= 0; i--)
     {
-    <p>@BugComment.BugId &nbsp;</p> 
-    <p>@BugComment.BugComment &nbsp;</p>
-    <p>@BugComment.Author &nbsp;</p>
-    <p>@BugComment.BugCommentDate</p>
+        var UpdateNumber = i + 1;
+        <div id="PreviousCommentDiv" style="border-style:solid; border-color:lightgray;" >
+            <h3>Update <strong>#@UpdateNumber:</strong></h3><br />
+            <p id="BugComment" style="font-size:large">@ListOfBugComments[i].BugComment </p> <br  />
 
+            <p style="font-size:small; color:gray; ">
+                Updated on @ListOfBugComments[i].BugCommentDate.ToShortDateString() at @ListOfBugComments[i].BugCommentDate.ToShortTimeString()
+                by <strong>@ListOfBugComments[i].Author</strong>
+            </p>
+        </div>
+        <br />
     }
 
 }
