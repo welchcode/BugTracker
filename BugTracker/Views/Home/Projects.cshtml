@@ -1,0 +1,23 @@
+﻿@model IEnumerable<ProjectModel>
+@{
+    ViewData["Title"] = "Projects";
+    var Projects = ViewBag.Projects;
+}
+
+<h1>Select a project</h1>
+
+@foreach(var Project in Projects)
+{
+    <div id="ProjectDiv" style="border-style:solid; border-color:lightgray;">
+        <h2><strong>@Project.ProjectName</strong></h2><br />
+
+        <h4 id="ProjectDescription" style="font-size:large">@Project.ProjectDescription</h4><br />
+
+          <p style="font-size:small; color:gray; ">
+            Project updated on: @Project.DateUpdated <br />
+            Total Number of Bugs: @Project.BugCount <br />
+          </p>
+</div>
+}
+
+

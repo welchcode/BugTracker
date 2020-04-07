@@ -13,7 +13,8 @@
     <textarea id="BugId" name="BugId" style="display:none;">@Bug.BugId</textarea>
     <textarea id="DateTimeCreated" name="DateTimeCreated" style="display:none;">@DateTime.Now.ToString()</textarea>
     <textarea id="Author" name="Author" style="display:none;">@System.Security.Principal.WindowsIdentity.GetCurrent().Name.ToString().Split('\\').Last()</textarea>
-    <input type="submit" asp-controller="Home" asp-action="UpdateBug" />
+    <br />
+    <input type="submit" asp-controller="Home" asp-action="UpdateBug" value="Submit Update" style="height:70px; font-size:16px; align-self:end;" />
 </form>
 
 <br />

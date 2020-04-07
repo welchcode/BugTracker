@@ -34,6 +34,36 @@ namespace BugTracker.Controllers
             return GetBug(Int32.Parse(BugId));
         }
 
+        public IActionResult ViewProjects()
+        {
+            List<ProjectModel> ProjectModels = new List<ProjectModel>();
+
+            //for now we will get all, eventually there will be a column dedicated to determine if the project has been completed or ended...
+            string SqlString = "SELECT * FROM BugTrackerDatabase.dbo.ProjectTable; ";
+
+            Utilities.Command = new System.Data.SqlClient.SqlCommand(SqlString, Utilities.Connection);
+
+            Utilities.Connection.Open();
+
+            using(Utilities.Reader = Utilities.Command.ExecuteReader())
+            {
+                while (Utilities.Reader.Read())
+                {
+                    ProjectModels.Add(new ProjectModel
+                    {
+                        ProjectId = Utilities.Reader.GetInt32(0),
+                        ProjectDescription = Utilities.Reader.GetString(1),
+                        DateUpdated = Utilities.Reader.GetDateTime(2),
+                        BugCount = Utilities.Reader.GetInt32(3),
+                        ProjectName = Utilities.Reader.GetString(4)
+                    });
+                }
+            }
+
+            ViewBag.Projects = ProjectModels;
+
+            return View("Projects");
+        }
         
 
         public IActionResult CreateBug()
